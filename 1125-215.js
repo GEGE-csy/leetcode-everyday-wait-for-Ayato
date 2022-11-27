@@ -8,7 +8,7 @@
  * @return {number}
  */
 // // 快排
-// 最好nlogn，最坏n^2，击败46.7%
+// 时间复杂度最好nlogn，最坏n^2
  var findKthLargest = function(nums, k) {
   const partition = (left, right) => {
     let p = left, q = right;
@@ -43,7 +43,7 @@
  * @return {number}
  */
 // // 归并排序
-// 击败39.2%
+// 时间复杂度nlogn
  var findKthLargest = function(nums, k) {
   const merge = (result, left, mid, right) => {
     let p = left, q = mid+1;
@@ -74,5 +74,48 @@
     }
   }
   mergeSort(0, nums.length-1);
+  return nums[nums.length - k];
+};
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+// // 堆排序
+// 时间复杂度nlogn
+var findKthLargest = function(nums, k) {
+  const buildMaxHeap = (nums,i) => {
+    while(nums[i] > nums[Math.floor((i-1)/2)]) {
+      [nums[i], nums[Math.floor((i-1)/2)]] = [nums[Math.floor((i-1)/2)], nums[i]];
+      i = Math.floor((i-1)/2);
+    }
+  }
+
+  const heapify = (i, heapSize) => {
+    let leftChild = i * 2 + 1;
+    while(leftChild < heapSize) {
+      let largerChild = (leftChild+1 < heapSize) && (nums[leftChild] < nums[leftChild+1]) ? leftChild+1 : leftChild;
+      if(nums[largerChild] > nums[i]) {
+        [nums[largerChild], nums[i]] = [nums[i], nums[largerChild]];
+        i = largerChild;
+        leftChild = i * 2 + 1;
+      } else {
+        return;
+      }
+    }
+  }
+  for(let i = 0; i < nums.length; i++) {
+    buildMaxHeap(nums, i);
+  }
+  let heapSize = nums.length;
+  [nums[0], nums[heapSize-1]] = [nums[heapSize-1], nums[0]];
+  heapSize--;
+  while(heapSize > 0) {
+    heapify(0, heapSize);
+    [nums[0], nums[heapSize-1]] = [nums[heapSize-1], nums[0]];
+    heapSize--;
+  }
   return nums[nums.length - k];
 };
