@@ -18,11 +18,11 @@ var eraseOverlapIntervals = function(intervals) {
   let del = 0;
   let end = intervals[0][1];
   for(let i = 1; i < intervals.length; i++) {
-      if(intervals[i][0] < end) {
-        del++;
-      } else {
-        end = intervals[i][1];
-      }
+    if(intervals[i][0] < end) {
+      del++;
+    } else {
+      end = intervals[i][1];
+    }
   }
   return del;
 };
